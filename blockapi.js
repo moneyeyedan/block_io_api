@@ -26,45 +26,56 @@
          if(err) throw err;
          var query="insert into account set ?"
          connect.query(query,object,(err,result)=>{
-             if(err) throw err;
-             res.send("sign up successfully");
+             if(err) {
+                 res.send("User Name Is Duplicate")
+             }else{ 
+                res.send("sign up successfully");
+             }
+            
          })
      })
  })
  app.post("/log_in",(req,res)=>{
         connect.query("select * from account where username=?",req.body.username,(err,result)=>{
             if(err) throw err;
-            var user = lodash.isEqual(req.body.password,result[0].password);
-            if(user){ 
-                block_io.get_new_address({}, (req,resp)=>{ 
-                    var bitcoin=[resp.data.address,req.body.username];
-                    connect.query("update account set bitcoin=?"+"where username=?",bitcoin,(err,result)=>{
-                        if(err) throw err;
-                    })
-                    console.log(resp.data.address)
-                 });
-             
-                 dogecoin.get_new_address({},(req,resp)=>{
-                    var dogecoin = [resp.data.address,req.body.username];
-                    connect.query("update account set dogecoin=?"+"where username=?",dogecoin,(err,result)=>{
-                        if(err) throw err;
-                       
-                    })
-                    console.log(resp.data.address)
-                 });
-                 litecoin.get_new_address({},(req,resp)=>{
-                     var litecoin = [resp.data.address,req.body.username];
-                     connect.query("update account set litecoin=?"+"where username=?",litecoin,(err,result)=>{
-                         if(err) throw err;
+            if(result[0]){
+                var user = lodash.isEqual(req.body.password,result[0].password);
+                if(user){ 
+                    block_io.get_new_address({}, (req,resp)=>{ 
+                        var bitcoin=[resp.data.address,req.body.username];
+                        connect.query("update account set bitcoin=?"+"where username=?",bitcoin,(err,result)=>{
+                            if(err) throw err;
+                        })
+                        console.log(resp.data.address)
+                    });
+                
+                    dogecoin.get_new_address({},(req,resp)=>{
+                        var dogecoin = [resp.data.address,req.body.username];
+                        connect.query("update account set dogecoin=?"+"where username=?",dogecoin,(err,result)=>{
+                            if(err) throw err;
                         
-                     })
-                    console.log(resp.data.address);
-                  });
-                  res.send("successfully log in");
+                        })
+                        console.log(resp.data.address)
+                    });
+                    litecoin.get_new_address({},(req,resp)=>{
+                        var litecoin = [resp.data.address,req.body.username];
+                        connect.query("update account set litecoin=?"+"where username=?",litecoin,(err,result)=>{
+                            if(err) throw err;
+                            
+                        })
+                        console.log(resp.data.address);
+                    });
+                    res.send("successfully log in");
+                }
+                else{
+                    res.send("the Password is dismatch");
+                }
             }
             else{
-                res.send("the authentication is dismatch");
+                res.send("The User Name is Wrong");
+                console.log("The User Name is Wrong");
             }
+           
         })
 })
 app.get("/amount_transfer",(req,res)=>{
