@@ -1,0 +1,21 @@
+{
+  "name": "blockio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "block_io": "^2.0.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "node-schedule": "^1.3.1",
+    "promise": "^8.0.2",
+    "request": "^2.88.0"
+  }
+}
